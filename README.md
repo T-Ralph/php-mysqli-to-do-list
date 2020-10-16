@@ -18,6 +18,9 @@
 - Styling the project to look nice
 - An unexpected feature is present (Make sure you mention what it is in your README.md file.)
 
+## Entity Relationship Diagram
+![ERD](img/ERD.png?raw=true)
+
 Docs: https://docs.google.com/document/d/1rnpsH7MAWg5vDiOqBNxU_HNgSOAOFix60s8f-5W6VVY/edit# <br>
 Trello: https://trello.com/b/w9M5WTo5/mysqli-assignment-to-do-list-by-t-ralph <br>
 GitHub: https://github.com/TECHCareers-by-Manpower/mysqli-assignment-to-do-list-T-Ralph <br>
