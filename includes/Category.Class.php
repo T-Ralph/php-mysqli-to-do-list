@@ -51,5 +51,28 @@ Class Category {
         }
     }
 
+    //Render Category
+    public function RenderCategoryToSelectOptions() {
+        //Create MySQLi Connection
+        $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+        if ($mysqli->connect_error) {
+            $this->message = "Connection Failed: " . $mysqli->connect_error;
+        }
+
+        //Statement and Query
+        $sql = "SELECT `CategoryID`, `Name` FROM `category`";
+        $mysqli_result = $mysqli->query($sql);
+
+        //Close Connection
+        $mysqli->close();
+
+        //Render Category Options
+        while( $category = $mysqli_result->fetch_assoc() ) {
+            ?>
+                <option value="<?php echo $category["CategoryID"]; ?>"><?php echo $category["Name"]; ?></option>
+            <?php
+        }
+    }
+
 }
 ?>

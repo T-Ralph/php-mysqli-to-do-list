@@ -4,14 +4,17 @@
         require_once dirname(__FILE__) . '/includes/' . $class . '.Class.php';
     });
 
-    //Include HTML HEAD
-    require_once dirname(__FILE__) . '/templates/head.php';
+    //Prepare to Render Category Options from Category Class
+    $render_category = new Category();
 
     //Check for FORM [POST] Actions
     //AddCategory [POST]
     if (isset($_POST["AddCategory"])) {
         $add_category = new Category($_POST["name"]);
     }
+
+    //Include HTML HEAD
+    require_once dirname(__FILE__) . '/templates/head.php';    
 ?>
     <main>
         <h1>To-Do App</h1>
@@ -25,6 +28,7 @@
                 <label for="category">Category</label>
                 <select name="category" id="category" placeholder="Category" required>
                     <option value="">Select Category</option>
+                    <?php (!$render_category->message) ? $render_category->RenderCategoryToSelectOptions() : $render_category->message; //Render Category Options ?>
                 </select>
                 <br /><br />
                 <input type="submit" name="AddToDo" value="Add To-Do">
