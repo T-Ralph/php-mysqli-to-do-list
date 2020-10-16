@@ -31,11 +31,11 @@ Class Category {
             }
 
             //Prepare Statement, Bind and Execute
-            $sql = "INSERT INTO `category` (`Name`) VALUES (?)";
+            $sql = "INSERT INTO `category` (`UserID`, `Name`) VALUES (?, ?)";
             if (!$mysqli_query = $mysqli->prepare($sql)) {
                 $this->message = "Prepare Failed: " . $mysqli_query->error;
             }
-            if (!$mysqli_query->bind_param("s", $this->name)) {
+            if (!$mysqli_query->bind_param("is", $_SESSION["userid"], $this->name)) {
                 $this->message = "Bind Failed: " . $mysqli_query->error;
             }
             if (!$mysqli_query->execute()) {
@@ -65,7 +65,8 @@ Class Category {
 
             //Statement and Execute
             $category_id = $mysqli->real_escape_string($category_id);
-            $sql = "SELECT * FROM `category` WHERE `CategoryID` = '$category_id'";
+            $user_id = $mysqli->real_escape_string($_SESSION["userid"]);
+            $sql = "SELECT * FROM `category` WHERE `CategoryID` = '$category_id' AND `UserID` = '$user_id'";
             if (!$mysqli_result = $mysqli->query($sql)) {
                 $this->message = "Query Failed: " . $mysqli_result->error;
             }
@@ -92,7 +93,8 @@ Class Category {
         }
 
         //Statement and Query
-        $sql = "SELECT `CategoryID`, `Name` FROM `category` WHERE `Deleted` = FALSE";
+        $user_id = $mysqli->real_escape_string($_SESSION["userid"]);
+        $sql = "SELECT `CategoryID`, `Name` FROM `category` WHERE `UserID` = '$user_id' AND `Deleted` = FALSE";
         if (!$mysqli_result = $mysqli->query($sql)) {
             $this->message = "Query Failed: " . $mysqli_result->error;
         }
@@ -119,11 +121,11 @@ Class Category {
             }
 
             //Prepare Statement, Bind and Execute
-            $sql = "UPDATE `category` SET `Name` = ? WHERE `CategoryID` = ?";
+            $sql = "UPDATE `category` SET `Name` = ? WHERE `CategoryID` = ? AND `UserID` = ?";
             if (!$mysqli_query = $mysqli->prepare($sql)) {
                 $this->message = "Prepare Failed: " . $mysqli_query->error;
             }
-            if (!$mysqli_query->bind_param("si", $category_name, $category_id)) {
+            if (!$mysqli_query->bind_param("sii", $category_name, $category_id, $_SESSION["userid"])) {
                 $this->message = "Bind Failed: " . $mysqli_query->error;
             }
             if (!$mysqli_query->execute()) {
@@ -155,11 +157,11 @@ Class Category {
             }
 
             //Prepare Statement, Bind and Execute
-            $sql = "UPDATE `category` SET `Deleted` = TRUE WHERE `CategoryID` = ?";
+            $sql = "UPDATE `category` SET `Deleted` = TRUE WHERE `CategoryID` = ? AND `UserID` = ?";
             if (!$mysqli_query = $mysqli->prepare($sql)) {
                 $this->message = "Prepare Failed: " . $mysqli_query->error;
             }
-            if (!$mysqli_query->bind_param("i", $category_id)) {
+            if (!$mysqli_query->bind_param("ii", $category_id, $_SESSION["userid"])) {
                 $this->message = "Bind Failed: " . $mysqli_query->error;
             }
             if (!$mysqli_query->execute()) {
