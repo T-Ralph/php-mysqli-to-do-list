@@ -29,7 +29,7 @@ main > h1 {
     margin: 15px;
     font-size: 50px;
 }
-section > h2, h3.response {
+section > h2, h3.message {
     margin: 0px 0px 10px 0px;
     padding: 10px 0px;
     width: 100%;
@@ -45,7 +45,7 @@ section:nth-of-type(2) > h2 {
 section:nth-of-type(3) > h2 {
     background-color: #8D021F;
 }
-section:nth-of-type(4) > h2, h3.response {
+section:nth-of-type(4) > h2, h3.message {
     background-color: #0B6323;
 }
 section:nth-of-type(1) {

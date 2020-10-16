@@ -1,11 +1,11 @@
 <?php
 //Set Up Class AutoLoading
 spl_autoload_register(function ($class) {
-    include_once dirname(__FILE__) . '/includes/' . $class . '.Class.php';
+    require_once dirname(__FILE__) . '/' . $class . '.Class.php';
 });
 
 //Include Database Credentials
-include_once dirname(__FILE__) . 'DB.Credentials.php';
+require_once dirname(__FILE__) . '/DB.Credentials.php';
 
 //Define Category Class
 Class Category {
@@ -14,17 +14,40 @@ Class Category {
     public function __construct($name = "") {
         //Assign Category
         $this->name = $name;
+        $this->message = NULL;
 
-        //Store Category
-        $this->StoreCategory();
+        //Add Category to Database 
+        $this->AddCategoryToDatabase();
     }
 
     //Add Category to Database
-    public function StoreCategory() {
-        //Save Category to Database if $this->name is Set
+    public function AddCategoryToDatabase() {
+        //Add Category to Database if $this->name is Set
         if ($this->name) {
             //Create MySQLi Connection
-            //$mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+            $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+            if ($mysqli->connect_error) {
+                $this->message = "Connection Failed: " . $mysqli->connect_error;
+            }
+
+            //Prepare Statement, Bind and Execute
+            $sql = "INSERT INTO `category` (`NAme`) VALUES (?)";
+            $mysqli_query = $mysqli->prepare($sql);
+            if (!$mysqli_query->bind_param("s", $this->name)) {
+                $this->message = "Bind Failed: " . $mysqli_query->error;
+            }
+            if (!$mysqli_query->execute()) {
+                $this->message = "Query Failed: " . $mysqli_query->error;
+            }
+
+            //Close Query and Connection
+            $mysqli_query->close();
+            $mysqli->close();
+
+            //Set Successful Message
+            if (!$this->message) {
+                $this->message = "Category Added";
+            }
         }
     }
 

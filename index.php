@@ -1,11 +1,17 @@
 <?php
     //Set Up Class AutoLoading
     spl_autoload_register(function ($class) {
-        include_once dirname(__FILE__) . '/includes/' . $class . '.Class.php';
+        require_once dirname(__FILE__) . '/includes/' . $class . '.Class.php';
     });
 
     //Include HTML HEAD
-    include_once dirname(__FILE__) . '/templates/head.php';
+    require_once dirname(__FILE__) . '/templates/head.php';
+
+    //Check for FORM [POST] Actions
+    //AddCategory [POST]
+    if (isset($_POST["AddCategory"])) {
+        $add_category = new Category($_POST["name"]);
+    }
 ?>
     <main>
         <h1>To-Do App</h1>
@@ -21,7 +27,7 @@
                     <option value="">Select Category</option>
                 </select>
                 <br /><br />
-                <input type="submit" name="add" value="Add To-Do">
+                <input type="submit" name="AddToDo" value="Add To-Do">
             </form>
             <br /><br />
             <h2>Add Category</h2>
@@ -29,8 +35,11 @@
                 <label for="name">Name</label>
                 <input type="text" name="name" id="name" placeholder="Name" required>
                 <br /><br />
-                <input type="submit" name="add" value="Add Category">
+                <input type="submit" name="AddCategory" value="Add Category">
             </form>
+            <?php if (isset($_POST["AddCategory"])): ?>
+                <h3 class="message"><?php echo $add_category->message; ?></h3>
+            <?php endif; ?>
         </section>
         <section>
             <h2>Active To-Do(s)</h2>
