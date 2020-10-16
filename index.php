@@ -23,6 +23,14 @@
                 <br /><br />
                 <input type="submit" name="add" value="Add To-Do">
             </form>
+            <br /><br />
+            <h2>Add Category</h2>
+            <form method="POST" action="">
+                <label for="name">Name</label>
+                <input type="text" name="name" id="name" placeholder="Name" required>
+                <br /><br />
+                <input type="submit" name="add" value="Add Category">
+            </form>
         </section>
         <section>
             <h2>Active To-Do(s)</h2>

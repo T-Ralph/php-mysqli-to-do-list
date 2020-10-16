@@ -18,6 +18,10 @@
 - Styling the project to look nice
 - An unexpected feature is present (Make sure you mention what it is in your README.md file.)
 
+## MySQL Database Setup
+- Duplicate `includes/DB.Credentials.Sample.php` and rename to `includes/DB.Credentials.php`
+- Set Database Credentials at `includes/DB.Credentials.php`
+
 ## Entity Relationship Diagram
 ![ERD](img/ERD.png?raw=true)
 
