@@ -31,7 +31,7 @@ Class Category {
             }
 
             //Prepare Statement, Bind and Execute
-            $sql = "INSERT INTO `category` (`NAme`) VALUES (?)";
+            $sql = "INSERT INTO `category` (`Name`) VALUES (?)";
             if (!$mysqli_query = $mysqli->prepare($sql)) {
                 $this->message = "Prepare Failed: " . $mysqli_query->error;
             }

@@ -1,7 +1,3 @@
-<?php
-    //Start Session to Enable $_SESSION Usage
-    session_start();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
