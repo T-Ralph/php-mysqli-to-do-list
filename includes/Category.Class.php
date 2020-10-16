@@ -32,7 +32,9 @@ Class Category {
 
             //Prepare Statement, Bind and Execute
             $sql = "INSERT INTO `category` (`NAme`) VALUES (?)";
-            $mysqli_query = $mysqli->prepare($sql);
+            if (!$mysqli_query = $mysqli->prepare($sql)) {
+                $this->message = "Prepare Failed: " . $mysqli_query->error;
+            }
             if (!$mysqli_query->bind_param("s", $this->name)) {
                 $this->message = "Bind Failed: " . $mysqli_query->error;
             }
@@ -51,6 +53,36 @@ Class Category {
         }
     }
 
+    //Get Category
+    public function GetCategoryFromDatabase($category_id) {
+        //Get Category from Database if $category_id is Set and Numeric
+        if ($category_id && is_numeric($category_id)) {
+            //Create MySQLi Connection
+            $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+            if ($mysqli->connect_error) {
+                $this->message = "Connection Failed: " . $mysqli->connect_error;
+            }
+
+            //Statement and Execute
+            $category_id = $mysqli->real_escape_string($category_id);
+            $sql = "SELECT * FROM `category` WHERE `CategoryID` = '$category_id'";
+            if (!$mysqli_result = $mysqli->query($sql)) {
+                $this->message = "Query Failed: " . $mysqli_result->error;
+            }
+
+            //Close Query and Connection
+            $mysqli->close();
+
+            //Set Successful Message
+            if (!$this->message) {
+                $this->category = $mysqli_result->fetch_assoc();
+            }
+        }
+        else {
+            $this->message = "Invalid Category ID";
+        }
+    }
+
     //Render Category
     public function RenderCategoryToSelectOptions() {
         //Create MySQLi Connection
@@ -60,17 +92,91 @@ Class Category {
         }
 
         //Statement and Query
-        $sql = "SELECT `CategoryID`, `Name` FROM `category`";
-        $mysqli_result = $mysqli->query($sql);
+        $sql = "SELECT `CategoryID`, `Name` FROM `category` WHERE `Deleted` = FALSE";
+        if (!$mysqli_result = $mysqli->query($sql)) {
+            $this->message = "Query Failed: " . $mysqli_result->error;
+        }
 
         //Close Connection
         $mysqli->close();
 
         //Render Category Options
-        while( $category = $mysqli_result->fetch_assoc() ) {
+        while ($category = $mysqli_result->fetch_assoc()) {
             ?>
                 <option value="<?php echo $category["CategoryID"]; ?>"><?php echo $category["Name"]; ?></option>
             <?php
+        }
+    }
+
+    //Update Category In Database
+    public function UpdateCategoryInDatabase($category_id, $category_name) {
+        //Update Category in Database if $category_id and $category_name is Set and $category_id is Numeric
+        if ($category_id && $category_name && is_numeric($category_id)) {
+            //Create MySQLi Connection
+            $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+            if ($mysqli->connect_error) {
+                $this->message = "Connection Failed: " . $mysqli->connect_error;
+            }
+
+            //Prepare Statement, Bind and Execute
+            $sql = "UPDATE `category` SET `Name` = ? WHERE `CategoryID` = ?";
+            if (!$mysqli_query = $mysqli->prepare($sql)) {
+                $this->message = "Prepare Failed: " . $mysqli_query->error;
+            }
+            if (!$mysqli_query->bind_param("si", $category_name, $category_id)) {
+                $this->message = "Bind Failed: " . $mysqli_query->error;
+            }
+            if (!$mysqli_query->execute()) {
+                $this->message = "Query Failed: " . $mysqli_query->error;
+            }
+
+            //Close Query and Connection
+            $mysqli_query->close();
+            $mysqli->close();
+
+            //Set Successful Message
+            if (!$this->message) {
+                $this->message = "Category Updated";
+            }
+        }
+        else {
+            $this->message = "Invalid Category ID or Name";
+        }
+    }
+
+    //Delete Category From Database
+    public function DeleteCategoryFromDatabase($category_id) {
+        //Delete Category from Database if $category_id is Set and Numeric
+        if ($category_id && is_numeric($category_id)) {
+            //Create MySQLi Connection
+            $mysqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+            if ($mysqli->connect_error) {
+                $this->message = "Connection Failed: " . $mysqli->connect_error;
+            }
+
+            //Prepare Statement, Bind and Execute
+            $sql = "UPDATE `category` SET `Deleted` = TRUE WHERE `CategoryID` = ?";
+            if (!$mysqli_query = $mysqli->prepare($sql)) {
+                $this->message = "Prepare Failed: " . $mysqli_query->error;
+            }
+            if (!$mysqli_query->bind_param("i", $category_id)) {
+                $this->message = "Bind Failed: " . $mysqli_query->error;
+            }
+            if (!$mysqli_query->execute()) {
+                $this->message = "Query Failed: " . $mysqli_query->error;
+            }
+
+            //Close Query and Connection
+            $mysqli_query->close();
+            $mysqli->close();
+
+            //Set Successful Message
+            if (!$this->message) {
+                $this->message = "Category Deleted";
+            }
+        }
+        else {
+            $this->message = "Invalid Category ID";
         }
     }
 
