@@ -66,7 +66,7 @@ Class Category {
             //Statement and Execute
             $category_id = $mysqli->real_escape_string($category_id);
             $user_id = $mysqli->real_escape_string($_SESSION["userid"]);
-            $sql = "SELECT * FROM `category` WHERE `CategoryID` = '$category_id' AND `UserID` = '$user_id'";
+            $sql = "SELECT * FROM `category` WHERE `CategoryID` = '$category_id' AND `UserID` = '$user_id' AND `Deleted` = FALSE";
             if (!$mysqli_result = $mysqli->query($sql)) {
                 $this->message = "Query Failed: " . $mysqli_result->error;
             }
@@ -121,7 +121,7 @@ Class Category {
             }
 
             //Prepare Statement, Bind and Execute
-            $sql = "UPDATE `category` SET `Name` = ? WHERE `CategoryID` = ? AND `UserID` = ?";
+            $sql = "UPDATE `category` SET `Name` = ? WHERE `CategoryID` = ? AND `UserID` = ? AND `Deleted` = FALSE";
             if (!$mysqli_query = $mysqli->prepare($sql)) {
                 $this->message = "Prepare Failed: " . $mysqli_query->error;
             }
