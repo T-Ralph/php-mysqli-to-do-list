@@ -21,9 +21,22 @@
 ## MySQL Database Setup
 - Duplicate `includes/DB.Credentials.Sample.php` and rename to `includes/DB.Credentials.php`
 - Set Database Credentials at `includes/DB.Credentials.php`
+- Import SQL database at `database/mysqltododatabase.sql`
+- Database name is `mysqltododatabase` (you can change the database name, just ensure it is properly noted at `includes/DB.Credentials.php`)
+- `database/mysqltododatabase.sql` contains sample data like:
+    - Sample user account:
+        - Username: Sample User 1
+        - Password: 1@resU@elpmaS
+    - Sample Categories
+    - Sample Active To-do Task
+    - Sample Overdue To-do Task
+    - Sample Completed To-do Task
 
 ## Entity Relationship Diagram
 ![ERD](img/ERD.png?raw=true)
+
+## Unexpected Feature
+- Added user account functionalities so each user can manage their separate to-do tasks.
 
 Docs: https://docs.google.com/document/d/1rnpsH7MAWg5vDiOqBNxU_HNgSOAOFix60s8f-5W6VVY/edit# <br>
 Trello: https://trello.com/b/w9M5WTo5/mysqli-assignment-to-do-list-by-t-ralph <br>

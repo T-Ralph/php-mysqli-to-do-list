@@ -3,5 +3,5 @@
 define("HOST", "");
 define("USER", "");
 define("PASSWORD", "");
-define("DATABASE", "");
+define("DATABASE", "mysqltododatabase");
 ?>
