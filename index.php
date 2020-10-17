@@ -41,9 +41,26 @@
         $update_category = new Category();
         $update_category->UpdateCategoryInDatabase($_POST["category_id"], $_POST["name"]);
     }
+    //AddToDo [POST]
+    if (isset($_POST["AddToDo"])) {
+        $add_todo = new Todo($_POST["category_id"], $_POST["task"], $_POST["due_date"]);
+    }
+    //CompleteTodo [POST]
+    if (isset($_POST["CompleteTodo"])) {
+        $complete_todo = new Todo();
+        $complete_todo->CompleteTodo($_POST["todo_id"]);
+    }
+    //DeleteTodo [POST]
+    if (isset($_POST["DeleteTodo"])) {
+        $delete_todo = new Todo();
+        $delete_todo->DeleteTodo($_POST["todo_id"]);
+    }
 
     //Prepare to Render Category Options from Category Class
     $render_category = new Category();
+
+    //Prepare to Render Todo
+    $render_todo = new Todo();
 
     //Include HTML HEAD
     require_once dirname(__FILE__) . '/templates/head.php';    
@@ -54,30 +71,33 @@
             <ul>
                 <li>
                     <form method="POST" action="">
-                        <input type="submit" name="SignOut" value="Sign Out">
+                        <input type="submit" name="SignOut" value="Sign Out" />
                     </form>
                 </li>
                 <li>
                     <form method="POST" action="">
-                        <input type="submit" name="DeleteAccount" value="Delete Account">
+                        <input type="submit" name="DeleteAccount" value="Delete Account" />
                     </form>
                 </li>
             </ul>
             <section>
                 <h2>Add To-Do</h2>
                 <form method="POST" action="">
-                    <label for="task">Task</label>
-                    <input type="text" name="task" id="task" placeholder="Task" required />
-                    <label for="due_date">Due Date</label>
-                    <input type="date" name="due_date" id="due_date" placeholder="Due Date" required />
                     <label for="category_id_add">Category</label>
                     <select name="category_id" id="category_id_add" placeholder="Category" required>
                         <option value="">Select Category</option>
                         <?php (!$render_category->message) ? $render_category->RenderCategoryToSelectOptions() : $render_category->message; //Render Category Options ?>
                     </select>
+                    <label for="task">Task</label>
+                    <input type="text" name="task" id="task" placeholder="Task" required />
+                    <label for="due_date">Due Date</label>
+                    <input type="date" name="due_date" id="due_date" placeholder="Due Date" required />
                     <br /><br />
                     <input type="submit" name="AddToDo" value="Add To-Do">
                 </form>
+                <?php if (isset($_POST["AddToDo"])): //If FORM is Submitted ?>
+                    <h3 class="message"><?php echo $add_todo->message; ?></h3>
+                <?php endif; ?>
                 <br /><br />
                 <h2>Add Category</h2>
                 <form method="POST" action="">
@@ -131,15 +151,24 @@
                 <?php if (isset($_POST["UpdateCategory"])): //If FORM is Submitted ?>
                     <h3 class="message"><?php echo $update_category->message; ?></h3>
                 <?php endif; ?>
-            </section>
+            </section>RenderActiveTodo()
             <section>
                 <h2>Active To-Do(s)</h2>
+                <ul>
+                    <?php $render_todo->RenderActiveTodo(); ?>
+                </ul>
             </section>
             <section>
                 <h2>Overdue To-Do(s)</h2>
+                <ul>
+                    <?php $render_todo->RenderOverdueTodo(); ?>
+                </ul>
             </section>
             <section>
                 <h2>Completed To-Do(s)</h2>
+                <ul>
+                    <?php $render_todo->RenderCompletedTodo(); ?>
+                </ul>
             </section>
         <?php else: ?>
             <h1>Sign In / Sign Up to Use the To-Do App</h1>
