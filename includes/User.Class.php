@@ -10,6 +10,9 @@ require_once dirname(__FILE__) . '/DB.Credentials.php';
 //Define User Class
 Class User {
 
+    private $rawPassword;
+    private $password;
+
     //Declare Constructor
     public function __construct($username = "", $password = "") {
         //Assign Category
